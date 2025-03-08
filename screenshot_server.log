@@ -1,0 +1,31 @@
+2025-03-08 20:19:38,362 - ScreenshotServer - INFO - 服务器已启动，监听端口: 8000
+2025-03-08 20:21:07,991 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 80%
+2025-03-08 20:21:35,290 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 80%
+2025-03-08 20:21:40,494 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 80%
+2025-03-08 20:25:36,128 - ScreenshotServer - INFO - 服务器已启动，监听端口: 8000
+2025-03-08 20:25:40,542 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 80%
+2025-03-08 20:25:48,922 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 80%
+2025-03-08 20:25:48,924 - ScreenshotServer - INFO - 服务器已停止
+2025-03-08 20:26:11,789 - ScreenshotServer - ERROR - 设置开机自启动失败: Command '['schtasks', '/create', '/tn', 'ScreenshotServer', '/tr', '"C:\\Users\\24991\\AppData\\Local\\Programs\\Python\\Python38\\pythonw.exe" "D:\\koishi\\截图程序\\screenshot_server.py"', '/sc', 'onlogon', '/rl', 'highest', '/f']' returned non-zero exit status 1.
+2025-03-08 20:28:20,883 - ScreenshotServer - INFO - 服务器已启动，监听端口: 8000
+2025-03-08 20:28:23,795 - ScreenshotServer - WARNING - 使用任务计划设置自启动失败: 错误: 拒绝访问。
+
+，尝试使用启动文件夹方法
+2025-03-08 20:28:34,976 - ScreenshotServer - INFO - 已在启动文件夹创建自启动脚本: C:\Users\24991\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\ScreenshotServer.bat
+2025-03-08 20:28:40,350 - ScreenshotServer - INFO - 已取消开机自启动
+2025-03-08 20:28:58,917 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 80%
+2025-03-08 20:29:07,808 - ScreenshotServer - INFO - 已取消开机自启动
+2025-03-08 20:29:10,255 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 17%
+2025-03-08 20:29:18,978 - ScreenshotServer - INFO - 已取消开机自启动
+2025-03-08 20:29:21,846 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 88%
+2025-03-08 20:29:25,171 - ScreenshotServer - INFO - 已取消开机自启动
+2025-03-08 20:29:27,916 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 100%
+2025-03-08 20:29:43,089 - ScreenshotServer - INFO - 服务器已启动，监听端口: 2000
+2025-03-08 20:29:51,528 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 100%
+2025-03-08 20:33:37,401 - ScreenshotServer - INFO - 服务器已启动，监听端口: 2000
+2025-03-08 20:33:41,187 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 100%
+2025-03-08 20:33:52,945 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 100%
+2025-03-08 20:33:58,590 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 100%
+2025-03-08 20:34:03,746 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 100%
+2025-03-08 20:34:07,848 - ScreenshotServer - INFO - 已发送屏幕截图，质量: 100%
+2025-03-08 20:35:01,912 - ScreenshotServer - INFO - 已取消开机自启动
