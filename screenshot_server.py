@@ -56,20 +56,38 @@ def save_config(config):
 class ScreenshotHandler(BaseHTTPRequestHandler):
     """处理屏幕截图请求的HTTP处理器"""
     
+    def log_message(self, format, *args):
+        """重写日志方法，将服务器日志输出到我们的日志系统"""
+        logger.info("%s - - [%s] %s" %
+                     (self.address_string(),
+                      self.log_date_time_string(),
+                      format % args))
+    
     def do_GET(self):
         """处理GET请求"""
-        if self.path == '/screenshot':
-            self.send_screenshot()
-        elif self.path == '/':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(b"<html><body><h1>Screenshot Server</h1><p>Use /screenshot to get a screenshot.</p></body></html>")
-        else:
-            self.send_response(404)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(b"404 Not Found")
+        try:
+            logger.debug(f"收到GET请求: {self.path}")
+            if self.path == '/screenshot':
+                self.send_screenshot()
+            elif self.path == '/':
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                self.wfile.write(b"<html><body><h1>Screenshot Server</h1><p>Use /screenshot to get a screenshot.</p></body></html>")
+            else:
+                self.send_response(404)
+                self.send_header('Content-type', 'text/plain')
+                self.end_headers()
+                self.wfile.write(b"404 Not Found")
+        except Exception as e:
+            logger.error(f"处理GET请求时出错: {e}", exc_info=True)
+            try:
+                self.send_response(500)
+                self.send_header('Content-type', 'text/plain')
+                self.end_headers()
+                self.wfile.write(f"服务器内部错误: {str(e)}".encode('utf-8'))
+            except:
+                logger.error("无法发送错误响应", exc_info=True)
     
     def send_screenshot(self):
         """捕获屏幕截图并发送"""
@@ -78,28 +96,33 @@ class ScreenshotHandler(BaseHTTPRequestHandler):
             config = load_config()
             quality = config.get("quality", 80)
             
+            logger.debug("开始捕获屏幕")
             # 捕获屏幕
             screenshot = ImageGrab.grab()
+            logger.debug(f"屏幕捕获成功，尺寸: {screenshot.size}")
             
             # 转换为JPEG格式
             img_byte_arr = io.BytesIO()
             screenshot.save(img_byte_arr, format='JPEG', quality=quality)
             img_byte_arr.seek(0)
+            img_data = img_byte_arr.getvalue()
+            logger.debug(f"图像转换成功，大小: {len(img_data)} 字节")
             
             # 发送响应
             self.send_response(200)
             self.send_header('Content-type', 'image/jpeg')
-            self.send_header('Content-length', str(len(img_byte_arr.getvalue())))
+            self.send_header('Content-length', str(len(img_data)))
             self.end_headers()
-            self.wfile.write(img_byte_arr.getvalue())
+            self.wfile.write(img_data)
             
             logger.info(f"已发送屏幕截图，质量: {quality}%")
         except Exception as e:
-            logger.error(f"截图失败: {e}")
+            logger.error(f"截图失败: {e}", exc_info=True)
             self.send_response(500)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(f"截图失败: {str(e)}".encode('utf-8'))
+            error_msg = f"截图失败: {str(e)}\n{traceback.format_exc()}"
+            self.wfile.write(error_msg.encode('utf-8'))
 
 class ScreenshotServer:
     """屏幕截图服务器"""
@@ -116,6 +139,7 @@ class ScreenshotServer:
         
         try:
             port = self.config.get("port", 8000)
+            logger.debug(f"尝试在端口 {port} 上启动服务器")
             self.server = HTTPServer(('0.0.0.0', port), ScreenshotHandler)
             self.server_thread = threading.Thread(target=self.server.serve_forever)
             self.server_thread.daemon = True
@@ -123,7 +147,7 @@ class ScreenshotServer:
             logger.info(f"服务器已启动，监听端口: {port}")
             return True
         except Exception as e:
-            logger.error(f"启动服务器失败: {e}")
+            logger.error(f"启动服务器失败: {e}", exc_info=True)
             messagebox.showerror("错误", f"启动服务器失败: {e}")
             return False
     
@@ -139,7 +163,7 @@ class ScreenshotServer:
                     server_to_stop.shutdown()
                     logger.info("服务器已停止")
                 except Exception as e:
-                    logger.error(f"停止服务器时出错: {e}")
+                    logger.error(f"停止服务器时出错: {e}", exc_info=True)
             
             threading.Thread(target=shutdown_server, daemon=True).start()
             return True
